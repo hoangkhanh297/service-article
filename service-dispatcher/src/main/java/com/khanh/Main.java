@@ -1,16 +1,22 @@
 package com.khanh;
 
+import com.khanh.conection.DatabaseConnection;
+import com.khanh.entities.City;
 import com.khanh.entities.Product;
 import com.khanh.utils.JSONUtils;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+
+    private static final Logger log = LogManager.getLogger(Main.class);
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
         HttpServer server = vertx.createHttpServer();
@@ -28,6 +34,10 @@ public class Main {
                 products.add(product);
             }
             sendResponse(request.response(), products, 200);
+        });
+        String SQL = "SELECT * FROM world.city";
+        DatabaseConnection.getConnection().doQuery(SQL, City.class, done->{
+            log.warn("Result : {}", done.get(0));
         });
         System.out.println("Start HTTP server OK");
     }

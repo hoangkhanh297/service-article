@@ -11,6 +11,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:2.4.7" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.21" level="project" />
     <orderEntry type="library" name="Maven: io.vertx:vertx-web-client:3.9.4" level="project" />
     <orderEntry type="library" name="Maven: io.vertx:vertx-web-common:3.9.4" level="project" />
     <orderEntry type="library" name="Maven: io.vertx:vertx-core:3.9.4" level="project" />
@@ -33,7 +35,6 @@
     <orderEntry type="library" name="Maven: io.netty:netty-transport-native-kqueue:osx-x86_64:4.1.48.Final" level="project" />
     <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.3" level="project" />
     <orderEntry type="library" name="Maven: com.typesafe.netty:netty-reactive-streams:2.0.4" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
     <orderEntry type="library" name="Maven: com.sun.activation:javax.activation:1.2.0" level="project" />
     <orderEntry type="library" name="Maven: io.vertx:vertx-web:3.9.4" level="project" />
     <orderEntry type="library" name="Maven: io.vertx:vertx-auth-common:3.9.4" level="project" />
@@ -47,5 +48,13 @@
     <orderEntry type="library" name="Maven: jakarta.activation:jakarta.activation-api:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.woodstox:stax2-api:4.2.1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.woodstox:woodstox-core:6.2.1" level="project" />
+    <orderEntry type="library" name="Maven: io.vertx:vertx-mysql-client:3.9.4" level="project" />
+    <orderEntry type="library" name="Maven: io.vertx:vertx-sql-client:3.9.4" level="project" />
+    <orderEntry type="library" name="Maven: io.vertx:vertx-jdbc-client:4.0.0-milestone5" level="project" />
+    <orderEntry type="library" name="Maven: io.vertx:vertx-sql-common:4.0.0-milestone5" level="project" />
+    <orderEntry type="library" name="Maven: com.mchange:c3p0:0.9.5.4" level="project" />
+    <orderEntry type="library" name="Maven: com.mchange:mchange-commons-java:0.2.15" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.13.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.13.3" level="project" />
   </component>
 </module>
