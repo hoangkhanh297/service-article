@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns:xi="http://www.w3.org/2001/XInclude" monitorInterval="30">
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="Console" level="INFO"/>
+        </Root>
+    </Loggers>
+</Configuration>

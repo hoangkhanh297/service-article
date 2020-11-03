@@ -1,7 +1,11 @@
 package com.khanh.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class City {
+    @JsonProperty("ID")
     private int id;
+    @JsonProperty("Name")
     private String name;
 
     public int getId() {

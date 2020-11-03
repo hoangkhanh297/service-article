@@ -1,28 +1,21 @@
 package com.khanh;
 
-import com.khanh.conection.DatabaseConnection;
+import com.khanh.dao.MySqlClientImpl;
 import com.khanh.entities.City;
-import com.khanh.entities.Product;
 import com.khanh.utils.JSONUtils;
-import io.vertx.core.Vertx;
-import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
-import io.vertx.ext.web.Router;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
+import io.vertx.core.json.JsonArray;
 
 public class Main {
 
-    private static final Logger log = LogManager.getLogger(Main.class);
     public static void main(String[] args) {
+/*        System.setProperty("log4j.configurationFile", "C:\\Users\\Khanh Hoang\\service-article\\service-dispatcher\\src\\main\\log4j2.xml");
+
         Vertx vertx = Vertx.vertx();
         HttpServer server = vertx.createHttpServer();
         Router router = Router.router(vertx);
-        server.requestHandler(router).listen(8080);
-        router.route("/service").handler(request -> {
+        server.requestHandler(router).listen(8080);*/
+/*        router.route("/service").handler(request -> {
             System.out.println("New request");
             List<Product> products = new ArrayList<>();
             for (int i = 1; i < 100; i++) {
@@ -34,12 +27,14 @@ public class Main {
                 products.add(product);
             }
             sendResponse(request.response(), products, 200);
-        });
-        String SQL = "SELECT * FROM world.city";
-        DatabaseConnection.getConnection().doQuery(SQL, City.class, done->{
-            log.warn("Result : {}", done.get(0));
-        });
+        });*/
+
+        String SQL = "SELECT * FROM world.city where ID = ? OR ID = ?";
         System.out.println("Start HTTP server OK");
+        new MySqlClientImpl().queryWithParams(SQL, new JsonArray().add(1).add(2), City.class, done->{
+            done.toString();
+        });
+
     }
 
     private static void sendSuccessResponse(HttpServerResponse response, Object object) {

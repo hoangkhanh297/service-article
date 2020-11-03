@@ -9,16 +9,12 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.impl.JDBCClientImpl;
 import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SQLConnection;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
 public class BaseJDBCClientImpl extends JDBCClientImpl implements BaseJDBCClient {
-    private final Logger log = LogManager.getLogger(this.getClass());
     public BaseJDBCClientImpl(Vertx vertx, DataSource dataSource) {
         super(vertx, dataSource);
     }
@@ -33,7 +29,6 @@ public class BaseJDBCClientImpl extends JDBCClientImpl implements BaseJDBCClient
     public <T> void doQueryWithParams(final String query, JsonArray params, final Class<T> type, final Handler<List<T>> callback) {
         queryWithParams(query, params, asyncResult -> {
             if (!asyncResult.succeeded()) {
-                log.warn("Query failed: " + asyncResult.cause());
                 callback.handle(null);
                 return;
             }
@@ -41,7 +36,6 @@ public class BaseJDBCClientImpl extends JDBCClientImpl implements BaseJDBCClient
             ResultSet rs = asyncResult.result();
             final List<T> result = new ArrayList<>();
             if (rs == null) {
-                log.warn("Execute query " + query + " fail");
                 callback.handle(result);
                 return;
             }
@@ -56,7 +50,6 @@ public class BaseJDBCClientImpl extends JDBCClientImpl implements BaseJDBCClient
                     }
                 });
             } else {
-                log.warn("Query result is empty");
                 callback.handle(result);
             }
         });
@@ -65,17 +58,17 @@ public class BaseJDBCClientImpl extends JDBCClientImpl implements BaseJDBCClient
     public void doCallWithParams(final String sp, final JsonArray param1, final JsonArray param2, final Handler<AsyncResult<ResultSet>> callback) {
         getConnection(connectionRes -> {
             if (connectionRes.failed()) {
-                log.error("---- can not get connection", connectionRes.cause());
+//                //log.error("---- can not get connection", connectionRes.cause());
                 callback.handle(null);
             } else {
                 SQLConnection connection = connectionRes.result();
                 if (connection == null) {
-                    log.error("---- can not get connection");
+                    //log.error("---- can not get connection");
                     callback.handle(null);
                 } else {
                     connection.callWithParams(sp, param1, param2, resultHandler -> {
                         if (resultHandler.failed()) {
-                            log.error("Execute store " + sp + " fail", resultHandler.cause());
+                            //log.error("Execute store " + sp + " fail", resultHandler.cause());
                         }
                         connection.close();
                         callback.handle(resultHandler);
@@ -88,18 +81,18 @@ public class BaseJDBCClientImpl extends JDBCClientImpl implements BaseJDBCClient
     public void batchUpdateWithParams(String query, List<JsonArray> listParams, Handler<Boolean> callback) {
         getConnection(resultHandler -> {
             if (resultHandler.failed()) {
-                log.error("---- can not get connection", resultHandler.cause());
+                //log.error("---- can not get connection", resultHandler.cause());
                 callback.handle(false);
             } else {
                 SQLConnection connection = resultHandler.result();
                 if (connection == null) {
-                    log.error("---- can not get connection", resultHandler.cause());
+                    //log.error("---- can not get connection", resultHandler.cause());
                     callback.handle(false);
                 } else {
                     executeBatchUpdateHelper(connection, query, listParams, 0, res -> {
                         connection.close(res1 -> {
                             // close connection success
-                            log.debug("----batchUpdateWithParams close connection");
+                            //log.debug("----batchUpdateWithParams close connection");
 
                             // return result
                             callback.handle(res);
@@ -115,7 +108,7 @@ public class BaseJDBCClientImpl extends JDBCClientImpl implements BaseJDBCClient
         int processSize = 100;
 
         if (idx >= listParams.size()) {
-            log.debug( "----updated records: " + ((idx - 1) / processSize));
+            //log.debug( "----updated records: " + ((idx - 1) / processSize));
             callback.handle(true);
             return;
         }
@@ -128,14 +121,14 @@ public class BaseJDBCClientImpl extends JDBCClientImpl implements BaseJDBCClient
 
                 int rowInsert = idx + 1;
                 if (rowInsert % processSize == 0) {
-                    log.debug("----executeBatchUpdateHelper updated records: " + (rowInsert / processSize));
+                    //log.debug("----executeBatchUpdateHelper updated records: " + (rowInsert / processSize));
                 }
 
                 // continue execute update
                 executeBatchUpdateHelper(connection, query, listParams, idx + 1, callback);
             } else {
 
-                log.error( "----execute update database error", updateResultAsyncResult.cause());
+                //log.error( "----execute update database error", updateResultAsyncResult.cause());
                 callback.handle(false);
             }
         });
@@ -144,18 +137,18 @@ public class BaseJDBCClientImpl extends JDBCClientImpl implements BaseJDBCClient
     public void batchWithParams(String query, List<JsonArray> args, Handler<Boolean> callback) {
         getConnection(connectionRes -> {
             if (connectionRes.failed()) {
-                log.error("---- can not get connection", connectionRes.cause());
+                //log.error("---- can not get connection", connectionRes.cause());
                 callback.handle(null);
             } else {
                 SQLConnection connection = connectionRes.result();
                 if (connection == null) {
-                    log.error("---- can not get connection");
+                    //log.error("---- can not get connection");
                     callback.handle(null);
                 } else {
                     connection.batchWithParams(query, args, resultHandler -> {
                         if (resultHandler.succeeded()) {
                             List<Integer> resultList = resultHandler.result();
-                            log.debug( "---- execute SQL affect num rows: " + resultList.size());
+                            //log.debug( "---- execute SQL affect num rows: " + resultList.size());
                             if (resultList.size() == args.size()) {
                                 connection.close();
                                 callback.handle(true);
@@ -164,7 +157,7 @@ public class BaseJDBCClientImpl extends JDBCClientImpl implements BaseJDBCClient
                                 callback.handle(false);
                             }
                         } else {
-                            log.error( "---- execute SQL error", resultHandler.cause());
+                            //log.error( "---- execute SQL error", resultHandler.cause());
                             connection.close();
                             callback.handle(false);
                         }
